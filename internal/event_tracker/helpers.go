@@ -6,6 +6,23 @@ import (
 	"strings"
 )
 
+type EventStatus int
+type IsHittingTarget [6]bool
+
+const (
+	Registred EventStatus = iota + 1
+	StartTimeSet
+	OnStartLine
+	Started
+	OnFiringRange
+	TargetHit
+	LeftFiringRange
+	EnteredPenaltyLaps
+	LeftPenaltyLaps
+	EndedMainLap
+	CantContinue
+)
+
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")
 
