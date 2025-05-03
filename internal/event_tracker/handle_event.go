@@ -9,7 +9,7 @@ import (
 func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 	sa := strings.Split(eventString, " ")
 	if len(sa) < 3 {
-		return ErrNotEnoughArguments
+		return ErrInvalidNumberArguments
 	}
 
 	eventID, err := strconv.Atoi(sa[1])
@@ -25,6 +25,13 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 	switch eventID {
 	case 1:
 		err = eventTracker.Register(competitorID)
+	case 2:
+		if len(sa) != 4 {
+			return ErrInvalidNumberArguments
+		}
+		if startTime, err := TimeToMilliseconds(sa[3]); err == nil {
+			err = eventTracker.SetStartTime(competitorID, startTime)
+		}
 	}
 
 	return err

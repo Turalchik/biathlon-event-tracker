@@ -24,10 +24,11 @@ const (
 	CantContinue
 )
 
-var ErrNotEnoughArguments = errors.New("not enough arguments")
+var ErrInvalidNumberArguments = errors.New("invalid number arguments")
 var ErrInvalidEventID = errors.New("invalid event id")
 var ErrInvalidCompetitorID = errors.New("invalid competitor id")
 var ErrCompetitorAreExist = errors.New("competitor are exist")
+var ErrCompetitorNotRegistered = errors.New("competitor not registered")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")
