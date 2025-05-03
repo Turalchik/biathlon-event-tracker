@@ -1,6 +1,7 @@
 package event_tracker
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -22,6 +23,11 @@ const (
 	EndedMainLap
 	CantContinue
 )
+
+var ErrNotEnoughArguments = errors.New("not enough arguments")
+var ErrInvalidEventID = errors.New("invalid event id")
+var ErrInvalidCompetitorID = errors.New("invalid competitor id")
+var ErrCompetitorAreExist = errors.New("competitor are exist")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")
