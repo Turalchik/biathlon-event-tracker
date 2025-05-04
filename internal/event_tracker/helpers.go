@@ -33,14 +33,16 @@ const (
 )
 
 type Info struct {
-	Status    EventStatus
-	Mark      Mark
-	StartTime int
+	Status      EventStatus
+	Mark        Mark
+	StartTime   int
+	FiringRange int
 
+	NumberHitTarget            int
+	TotalNumberShots           int
 	StartTimeLastLap           int
 	TotalMs2CompleteEachLaps   []int
 	TotalMs2CompletePenaltyLap int
-	NumberHittingTarget        int
 }
 
 var ErrInvalidNumberArguments = errors.New("invalid number arguments")
@@ -53,6 +55,9 @@ var ErrCompetitorNotOnStartLine = errors.New("competitor not on start line")
 var ErrCompetitorNotOnMainLap = errors.New("competitor not on main lap")
 var ErrFiringRangeNotExist = errors.New("firing range not exist")
 var ErrFiringRangeNotFree = errors.New("firing range not free")
+var ErrCompetitorNotOnFiringRange = errors.New("competitor not on firing range")
+var ErrTargetNotExist = errors.New("target not exist")
+var ErrTargetAlreadyHitted = errors.New("target has already been hit")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")

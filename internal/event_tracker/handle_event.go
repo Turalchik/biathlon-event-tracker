@@ -41,6 +41,20 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 		if startTime, err := TimeToMilliseconds(sa[0]); err == nil {
 			err = eventTracker.StartMoving(competitorID, startTime)
 		}
+	case 5:
+		if len(sa) != 4 {
+			return ErrInvalidNumberArguments
+		}
+		if firingRange, err := strconv.Atoi(sa[3]); err == nil {
+			err = eventTracker.OnFiringRange(competitorID, firingRange)
+		}
+	case 6:
+		if len(sa) != 4 {
+			return ErrInvalidNumberArguments
+		}
+		if target, err := strconv.Atoi(sa[3]); err == nil {
+			err = eventTracker.HitTarget(competitorID, target)
+		}
 	}
 
 	return err

@@ -12,7 +12,7 @@ func (eventTracker *EventTracker) Register(competitorID int) error {
 		StartTime:                  0,
 		TotalMs2CompleteEachLaps:   make([]int, 0, eventTracker.Laps),
 		TotalMs2CompletePenaltyLap: 0,
-		NumberHittingTarget:        0,
+		NumberHitTarget:            0,
 	}
 	return nil
 }

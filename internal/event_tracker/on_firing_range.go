@@ -17,6 +17,8 @@ func (eventTracker *EventTracker) OnFiringRange(competitorID int, firingRange in
 	}
 
 	info.Status = OnFiringRange
+	info.FiringRange = firingRange
+	info.TotalNumberShots += 5
 	eventTracker.IsBusyFiringRange[firingRange] = true
 	return nil
 }
