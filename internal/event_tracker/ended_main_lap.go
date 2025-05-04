@@ -17,6 +17,6 @@ func (eventTracker *EventTracker) EndedMainLap(competitorID int, endTime int) er
 		info.Mark = Finished
 	}
 
-	info.Status = OnStartLine
+	info.Status = OnMainLap
 	return nil
 }
