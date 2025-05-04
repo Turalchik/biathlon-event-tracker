@@ -35,9 +35,6 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 	case 3:
 		err = eventTracker.OnStartLine(competitorID)
 	case 4:
-		if len(sa) != 4 {
-			return ErrInvalidNumberArguments
-		}
 		if startTime, err := TimeToMilliseconds(sa[0]); err == nil {
 			err = eventTracker.StartMoving(competitorID, startTime)
 		}
@@ -57,6 +54,10 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 		}
 	case 7:
 		err = eventTracker.LeftFiringRange(competitorID)
+	case 8:
+		if startTime, err := TimeToMilliseconds(sa[0]); err == nil {
+			err = eventTracker.EnteredPenaltyLaps(competitorID, startTime)
+		}
 	}
 
 	return err
