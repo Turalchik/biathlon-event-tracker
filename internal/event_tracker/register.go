@@ -7,7 +7,7 @@ func (eventTracker *EventTracker) Register(competitorID int) error {
 		return fmt.Errorf("%w: competitor id = %v", ErrCompetitorAreExist, competitorID)
 	}
 	eventTracker.Competitor2Info[competitorID] = &Info{
-		Status:                     Registred,
+		Status:                     Registered,
 		Mark:                       NotStarted,
 		StartTime:                  0,
 		TotalMs2CompleteEachLaps:   make([]int, 0, eventTracker.Laps),

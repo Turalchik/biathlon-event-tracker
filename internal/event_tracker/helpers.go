@@ -11,10 +11,10 @@ type EventStatus int
 type IsHittingTarget [6]bool
 
 const (
-	Registred EventStatus = iota + 1
+	Registered EventStatus = iota + 1
 	StartTimeSet
 	OnStartLine
-	Started
+	OnMainLap
 	OnFiringRange
 	TargetHit
 	LeftFiringRange
@@ -50,6 +50,9 @@ var ErrCompetitorAreExist = errors.New("competitor are exist")
 var ErrCompetitorNotRegistered = errors.New("competitor not registered")
 var ErrStartTimeNotSetForCompetitor = errors.New("start time not set for competitor")
 var ErrCompetitorNotOnStartLine = errors.New("competitor not on start line")
+var ErrCompetitorNotOnMainLap = errors.New("competitor not on main lap")
+var ErrFiringRangeNotExist = errors.New("firing range not exist")
+var ErrFiringRangeNotFree = errors.New("firing range not free")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")

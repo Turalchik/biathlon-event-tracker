@@ -4,7 +4,7 @@ import "fmt"
 
 func (eventTracker *EventTracker) SetStartTime(competitorID int, startTime int) error {
 	info, ok := eventTracker.Competitor2Info[competitorID]
-	if !ok || info.Status != Registred {
+	if !ok || info.Status != Registered {
 		return fmt.Errorf("%w: competitor id = %v", ErrCompetitorNotRegistered, competitorID)
 	}
 	info.StartTime = startTime

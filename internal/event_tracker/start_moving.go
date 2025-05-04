@@ -10,7 +10,7 @@ func (eventTracker *EventTracker) StartMoving(competitorID int, startTime int) e
 
 	if startTime >= info.StartTime && startTime <= info.StartTime+eventTracker.StartDelta {
 		info.Mark = NotFinished
-		info.Status = Started
+		info.Status = OnMainLap
 		info.StartTimeLastLap = startTime
 	}
 
