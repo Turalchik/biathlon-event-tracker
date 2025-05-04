@@ -58,6 +58,10 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 		if startTime, err := TimeToMilliseconds(sa[0]); err == nil {
 			err = eventTracker.EnteredPenaltyLaps(competitorID, startTime)
 		}
+	case 9:
+		if endTime, err := TimeToMilliseconds(sa[0]); err == nil {
+			err = eventTracker.LeftPenaltyLaps(competitorID, endTime)
+		}
 	}
 
 	return err

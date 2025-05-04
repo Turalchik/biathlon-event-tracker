@@ -61,6 +61,7 @@ var ErrCompetitorNotOnFiringRange = errors.New("competitor not on firing range")
 var ErrTargetNotExist = errors.New("target not exist")
 var ErrTargetAlreadyHit = errors.New("target has already been hit")
 var ErrCompetitorNotLeftFiringRange = errors.New("competitor not left firing range")
+var ErrCompetitorNotEnteredPenaltyLaps = errors.New("competitor not entered penalty laps")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")

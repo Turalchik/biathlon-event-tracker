@@ -393,3 +393,63 @@ func TestEventTracker_EnteredPenaltyLaps(t *testing.T) {
 		t.Errorf("expected error %v, got %v", ErrCompetitorNotLeftFiringRange, err)
 	}
 }
+
+func TestEventTracker_LeftPenaltyLaps(t *testing.T) {
+	cfg := &Config{
+		Laps:        0,
+		LapLen:      0,
+		PenaltyLen:  0,
+		FiringLines: 2,
+		Start:       "[10:00:00.000]",
+		StartDelta:  "[10:00:00.000]",
+	}
+
+	eventTracker, err := NewEventTracker(cfg)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	competitorID := 1
+	startTime := 0
+	firingRange := 1
+
+	if err = eventTracker.Register(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.SetStartTime(competitorID, startTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnStartLine(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.StartMoving(competitorID, eventTracker.Competitor2Info[competitorID].StartTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnFiringRange(competitorID, firingRange); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.LeftFiringRange(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.EnteredPenaltyLaps(competitorID, startTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.LeftPenaltyLaps(competitorID, startTime+10); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if info, _ := eventTracker.Competitor2Info[competitorID]; info.Status != LeftPenaltyLaps || info.TotalNumberPenaltyLaps != 5 || info.TotalMs2CompletePenaltyLap != 10 {
+		t.Errorf("expected competitor with ID %v lefted %v penalty laps on %v time, got %v laps on %v time", competitorID, 5, 10, info.TotalNumberPenaltyLaps, info.TotalMs2CompletePenaltyLap)
+	}
+
+	if err = eventTracker.LeftPenaltyLaps(competitorID, startTime+10); !errors.Is(err, ErrCompetitorNotEnteredPenaltyLaps) {
+		t.Errorf("expected error %v, got %v", ErrCompetitorNotEnteredPenaltyLaps, err)
+	}
+}
