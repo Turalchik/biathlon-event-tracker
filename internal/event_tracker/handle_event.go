@@ -32,6 +32,8 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 		if startTime, err := TimeToMilliseconds(sa[3]); err == nil {
 			err = eventTracker.SetStartTime(competitorID, startTime)
 		}
+	case 3:
+
 	}
 
 	return err

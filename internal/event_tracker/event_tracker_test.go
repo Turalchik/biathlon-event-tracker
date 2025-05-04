@@ -77,3 +77,42 @@ func TestEventTracker_SetStartTime(t *testing.T) {
 		t.Errorf("expected error %v, got %v", ErrCompetitorNotRegistered, err)
 	}
 }
+
+func TestEventTracker_OnStartLine(t *testing.T) {
+	cfg := &Config{
+		Laps:        0,
+		LapLen:      0,
+		PenaltyLen:  0,
+		FiringLines: 0,
+		Start:       "[10:00:00.000]",
+		StartDelta:  "[10:00:00.000]",
+	}
+
+	eventTracker, err := NewEventTracker(cfg)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	competitorID := 1
+	startTime := 0
+
+	if err = eventTracker.Register(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.SetStartTime(competitorID, startTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnStartLine(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if info, ok := eventTracker.Competitor2Info[competitorID]; !ok || info == nil || info.Status != OnStartLine {
+		t.Errorf("expected competitor with ID %v to be on start line", competitorID)
+	}
+
+	if err = eventTracker.OnStartLine(competitorID); !errors.Is(err, ErrStartTimeNotSetForCompetitor) {
+		t.Errorf("expected error %v, got %v", ErrCompetitorNotRegistered, err)
+	}
+}
