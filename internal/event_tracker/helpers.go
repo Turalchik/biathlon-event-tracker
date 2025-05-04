@@ -37,6 +37,7 @@ type Info struct {
 	Mark      Mark
 	StartTime int
 
+	StartTimeLastLap           int
 	TotalMs2CompleteEachLaps   []int
 	TotalMs2CompletePenaltyLap int
 	NumberHittingTarget        int
@@ -48,6 +49,7 @@ var ErrInvalidCompetitorID = errors.New("invalid competitor id")
 var ErrCompetitorAreExist = errors.New("competitor are exist")
 var ErrCompetitorNotRegistered = errors.New("competitor not registered")
 var ErrStartTimeNotSetForCompetitor = errors.New("start time not set for competitor")
+var ErrCompetitorNotOnStartLine = errors.New("competitor not on start line")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")

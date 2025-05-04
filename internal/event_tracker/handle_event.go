@@ -33,7 +33,14 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 			err = eventTracker.SetStartTime(competitorID, startTime)
 		}
 	case 3:
-
+		err = eventTracker.OnStartLine(competitorID)
+	case 4:
+		if len(sa) != 4 {
+			return ErrInvalidNumberArguments
+		}
+		if startTime, err := TimeToMilliseconds(sa[0]); err == nil {
+			err = eventTracker.StartMoving(competitorID, startTime)
+		}
 	}
 
 	return err
