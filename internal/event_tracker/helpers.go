@@ -63,7 +63,8 @@ var (
 	ErrCompetitorNotLeftFiringRange              = errors.New("competitor not left firing range")
 	ErrCompetitorNotEnteredPenaltyLaps           = errors.New("competitor not entered penalty laps")
 	ErrCompetitorNotLeftFiringRangeOrPenaltyLaps = errors.New("competitor not left firing range or penalty lap")
-	ErrCompetitorNotStartedAlreadyFinished       = errors.New("competitor already finished")
+	ErrCompetitorNotStartedOrAlreadyFinished     = errors.New("competitor already finished")
+	ErrCompetitorAlreadyCantContinue             = errors.New("competitor already can't continue")
 )
 
 func TimeToMilliseconds(timeStr string) (int, error) {

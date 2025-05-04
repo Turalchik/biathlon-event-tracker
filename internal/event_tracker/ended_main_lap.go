@@ -9,7 +9,7 @@ func (eventTracker *EventTracker) EndedMainLap(competitorID int, endTime int) er
 	}
 
 	if info.Mark != NotFinished {
-		return fmt.Errorf("%w: competitor id = %v", ErrCompetitorNotStartedAlreadyFinished, competitorID)
+		return fmt.Errorf("%w: competitor id = %v", ErrCompetitorNotStartedOrAlreadyFinished, competitorID)
 	}
 
 	info.TotalMs2CompleteEachLaps = append(info.TotalMs2CompleteEachLaps, endTime-info.StartTimeLastMainLap)
