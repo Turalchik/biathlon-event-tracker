@@ -55,6 +55,8 @@ func (eventTracker *EventTracker) HandleEvent(eventString string) error {
 		if target, err := strconv.Atoi(sa[3]); err == nil {
 			err = eventTracker.HitTarget(competitorID, target)
 		}
+	case 7:
+		err = eventTracker.LeftFiringRange(competitorID)
 	}
 
 	return err

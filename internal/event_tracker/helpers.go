@@ -16,7 +16,6 @@ const (
 	OnStartLine
 	OnMainLap
 	OnFiringRange
-	TargetHit
 	LeftFiringRange
 	EnteredPenaltyLaps
 	LeftPenaltyLaps
@@ -41,6 +40,9 @@ type Info struct {
 	NumberHitTarget            int
 	TotalNumberShots           int
 	StartTimeLastLap           int
+	StartTimeLastPenaltyLap    int
+	TotalNumberPenaltyLaps     int
+	CurrentNumberPenaltyLaps   int
 	TotalMs2CompleteEachLaps   []int
 	TotalMs2CompletePenaltyLap int
 }
@@ -57,7 +59,7 @@ var ErrFiringRangeNotExist = errors.New("firing range not exist")
 var ErrFiringRangeNotFree = errors.New("firing range not free")
 var ErrCompetitorNotOnFiringRange = errors.New("competitor not on firing range")
 var ErrTargetNotExist = errors.New("target not exist")
-var ErrTargetAlreadyHitted = errors.New("target has already been hit")
+var ErrTargetAlreadyHit = errors.New("target has already been hit")
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")

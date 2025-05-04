@@ -13,7 +13,7 @@ func (eventTracker *EventTracker) HitTarget(competitorID int, target int) error 
 	}
 
 	if eventTracker.StateFiringRange[info.FiringRange][target] {
-		return fmt.Errorf("%w: target id = %v", ErrTargetAlreadyHitted, target)
+		return fmt.Errorf("%w: target id = %v", ErrTargetAlreadyHit, target)
 	}
 
 	info.NumberHitTarget++

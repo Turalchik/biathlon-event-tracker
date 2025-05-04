@@ -268,11 +268,68 @@ func TestEventTracker_HitTarget(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if info, ok := eventTracker.Competitor2Info[competitorID]; !ok || info == nil || !eventTracker.StateFiringRange[info.FiringRange][target] {
-		t.Errorf("expected target with ID %v to be hitted", target)
+	if !eventTracker.StateFiringRange[firingRange][target] {
+		t.Errorf("expected target with ID %v to be hit", target)
 	}
 
-	if err = eventTracker.HitTarget(competitorID, target); !errors.Is(err, ErrTargetAlreadyHitted) {
-		t.Errorf("expected error %v, got %v", ErrTargetAlreadyHitted, err)
+	if err = eventTracker.HitTarget(competitorID, target); !errors.Is(err, ErrTargetAlreadyHit) {
+		t.Errorf("expected error %v, got %v", ErrTargetAlreadyHit, err)
+	}
+}
+
+func TestEventTracker_LeftFiringRange(t *testing.T) {
+	cfg := &Config{
+		Laps:        0,
+		LapLen:      0,
+		PenaltyLen:  0,
+		FiringLines: 2,
+		Start:       "[10:00:00.000]",
+		StartDelta:  "[10:00:00.000]",
+	}
+
+	eventTracker, err := NewEventTracker(cfg)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	competitorID := 1
+	startTime := 0
+	firingRange := 1
+	target := 1
+
+	if err = eventTracker.Register(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.SetStartTime(competitorID, startTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnStartLine(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.StartMoving(competitorID, eventTracker.Competitor2Info[competitorID].StartTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnFiringRange(competitorID, firingRange); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.HitTarget(competitorID, target); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.LeftFiringRange(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if eventTracker.StateFiringRange[firingRange][target] {
+		t.Errorf("expected target with ID %v to be not hit", target)
+	}
+
+	if err = eventTracker.LeftFiringRange(competitorID); !errors.Is(err, ErrCompetitorNotOnFiringRange) {
+		t.Errorf("expected error %v, got %v", ErrCompetitorNotOnFiringRange, err)
 	}
 }
