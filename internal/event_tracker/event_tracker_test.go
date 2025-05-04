@@ -453,3 +453,59 @@ func TestEventTracker_LeftPenaltyLaps(t *testing.T) {
 		t.Errorf("expected error %v, got %v", ErrCompetitorNotEnteredPenaltyLaps, err)
 	}
 }
+
+func TestEventTracker_EndedMainLap(t *testing.T) {
+	cfg := &Config{
+		Laps:        1,
+		LapLen:      0,
+		PenaltyLen:  0,
+		FiringLines: 2,
+		Start:       "[10:00:00.000]",
+		StartDelta:  "[10:00:00.000]",
+	}
+
+	eventTracker, err := NewEventTracker(cfg)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	competitorID := 1
+	startTime := 0
+	firingRange := 1
+
+	if err = eventTracker.Register(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.SetStartTime(competitorID, startTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnStartLine(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.StartMoving(competitorID, startTime); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.OnFiringRange(competitorID, firingRange); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.LeftFiringRange(competitorID); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if err = eventTracker.EndedMainLap(competitorID, startTime+10); err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if info, ok := eventTracker.Competitor2Info[competitorID]; !ok || info.Status != OnStartLine || info.Mark != Finished || info.TotalMs2CompleteEachLaps[0] != 10 {
+		t.Errorf("expected competitor with %v id on start line status and mark finished, got %v status and %v mark", competitorID, info.Status, info.Mark)
+	}
+
+	if err = eventTracker.EndedMainLap(competitorID, startTime+10); !errors.Is(err, ErrCompetitorNotLeftFiringRangeOrPenaltyLaps) {
+		t.Errorf("expected error %v, got %v", ErrCompetitorNotLeftFiringRangeOrPenaltyLaps, err)
+	}
+}

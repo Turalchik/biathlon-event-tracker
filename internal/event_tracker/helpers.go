@@ -19,7 +19,6 @@ const (
 	LeftFiringRange
 	EnteredPenaltyLaps
 	LeftPenaltyLaps
-	EndedMainLap
 	CantContinue
 )
 
@@ -39,7 +38,7 @@ type Info struct {
 
 	NumberHitTarget            int
 	TotalNumberShots           int
-	StartTimeLastLap           int
+	StartTimeLastMainLap       int
 	StartTimeLastPenaltyLap    int
 	TotalNumberPenaltyLaps     int
 	CurrentNumberPenaltyLaps   int
@@ -47,21 +46,25 @@ type Info struct {
 	TotalMs2CompletePenaltyLap int
 }
 
-var ErrInvalidNumberArguments = errors.New("invalid number arguments")
-var ErrInvalidEventID = errors.New("invalid event id")
-var ErrInvalidCompetitorID = errors.New("invalid competitor id")
-var ErrCompetitorAreExist = errors.New("competitor are exist")
-var ErrCompetitorNotRegistered = errors.New("competitor not registered")
-var ErrStartTimeNotSetForCompetitor = errors.New("start time not set for competitor")
-var ErrCompetitorNotOnStartLine = errors.New("competitor not on start line")
-var ErrCompetitorNotOnMainLap = errors.New("competitor not on main lap")
-var ErrFiringRangeNotExist = errors.New("firing range not exist")
-var ErrFiringRangeNotFree = errors.New("firing range not free")
-var ErrCompetitorNotOnFiringRange = errors.New("competitor not on firing range")
-var ErrTargetNotExist = errors.New("target not exist")
-var ErrTargetAlreadyHit = errors.New("target has already been hit")
-var ErrCompetitorNotLeftFiringRange = errors.New("competitor not left firing range")
-var ErrCompetitorNotEnteredPenaltyLaps = errors.New("competitor not entered penalty laps")
+var (
+	ErrInvalidNumberArguments                    = errors.New("invalid number arguments")
+	ErrInvalidEventID                            = errors.New("invalid event id")
+	ErrInvalidCompetitorID                       = errors.New("invalid competitor id")
+	ErrCompetitorAreExist                        = errors.New("competitor are exist")
+	ErrCompetitorNotRegistered                   = errors.New("competitor not registered")
+	ErrStartTimeNotSetForCompetitor              = errors.New("start time not set for competitor")
+	ErrCompetitorNotOnStartLine                  = errors.New("competitor not on start line")
+	ErrCompetitorNotOnMainLap                    = errors.New("competitor not on main lap")
+	ErrFiringRangeNotExist                       = errors.New("firing range not exist")
+	ErrFiringRangeNotFree                        = errors.New("firing range not free")
+	ErrCompetitorNotOnFiringRange                = errors.New("competitor not on firing range")
+	ErrTargetNotExist                            = errors.New("target not exist")
+	ErrTargetAlreadyHit                          = errors.New("target has already been hit")
+	ErrCompetitorNotLeftFiringRange              = errors.New("competitor not left firing range")
+	ErrCompetitorNotEnteredPenaltyLaps           = errors.New("competitor not entered penalty laps")
+	ErrCompetitorNotLeftFiringRangeOrPenaltyLaps = errors.New("competitor not left firing range or penalty lap")
+	ErrCompetitorNotStartedAlreadyFinished       = errors.New("competitor already finished")
+)
 
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")
