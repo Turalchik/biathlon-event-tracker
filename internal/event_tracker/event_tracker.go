@@ -8,10 +8,9 @@ type EventTracker struct {
 	Start       int
 	StartDelta  int
 
-	Competitor2Status    map[int]EventStatus
-	IsBusyFiringRange    map[int]bool
-	StateFiringRange     []IsHittingTarget
-	Competitor2StartTime map[int]int
+	IsBusyFiringRange map[int]bool
+	StateFiringRange  []IsHittingTarget
+	Competitor2Info   map[int]*Info
 }
 
 type Config struct {
@@ -42,9 +41,8 @@ func NewEventTracker(cfg *Config) (*EventTracker, error) {
 		Start:       start,
 		StartDelta:  startDelta,
 
-		Competitor2Status:    make(map[int]EventStatus),
-		IsBusyFiringRange:    make(map[int]bool),
-		StateFiringRange:     make([]IsHittingTarget, cfg.FiringLines),
-		Competitor2StartTime: make(map[int]int),
+		IsBusyFiringRange: make(map[int]bool),
+		StateFiringRange:  make([]IsHittingTarget, cfg.FiringLines),
+		Competitor2Info:   make(map[int]*Info),
 	}, nil
 }

@@ -25,8 +25,8 @@ func TestEventTracker_Register(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if status, ok := eventTracker.Competitor2Status[1]; !ok || status != Registred {
-		t.Errorf("expected competitor with ID 1 to be registered, got status: %v", status)
+	if info, ok := eventTracker.Competitor2Info[1]; !ok || info == nil || info.Status != Registred {
+		t.Error("expected competitor with ID 1 to be registered")
 	}
 
 	err = eventTracker.Register(1)
@@ -65,12 +65,12 @@ func TestEventTracker_SetStartTime(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	if status, ok := eventTracker.Competitor2Status[competitorID]; !ok || status != StartTimeSet {
-		t.Errorf("expected competitor with ID %v to be start time set, got status: %v", competitorID, status)
+	if info, ok := eventTracker.Competitor2Info[competitorID]; !ok || info == nil || info.Status != StartTimeSet {
+		t.Errorf("expected competitor with ID %v to be start time set", competitorID)
 	}
 
-	if time, ok := eventTracker.Competitor2StartTime[competitorID]; !ok || time != startTime {
-		t.Errorf("expected %v time, got %v", startTime, time)
+	if info, ok := eventTracker.Competitor2Info[competitorID]; !ok || info == nil || info.StartTime != startTime {
+		t.Errorf("expected %v time", startTime)
 	}
 
 	if err = eventTracker.SetStartTime(competitorID, startTime); !errors.Is(err, ErrCompetitorNotRegistered) {

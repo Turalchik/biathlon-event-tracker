@@ -24,6 +24,24 @@ const (
 	CantContinue
 )
 
+type Mark int
+
+const (
+	NotStarted Mark = iota + 1
+	NotFinished
+	Finished
+)
+
+type Info struct {
+	Status    EventStatus
+	Mark      Mark
+	StartTime int
+
+	TotalMs2CompleteEachLaps   []int
+	TotalMs2CompletePenaltyLap int
+	NumberHittingTarget        int
+}
+
 var ErrInvalidNumberArguments = errors.New("invalid number arguments")
 var ErrInvalidEventID = errors.New("invalid event id")
 var ErrInvalidCompetitorID = errors.New("invalid competitor id")
