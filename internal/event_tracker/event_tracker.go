@@ -42,7 +42,7 @@ func NewEventTracker(cfg *Config) (*EventTracker, error) {
 		StartDelta:  startDelta,
 
 		IsBusyFiringRange: make([]bool, cfg.FiringLines+1),
-		StateFiringRange:  make([]IsHittingTarget, cfg.FiringLines),
+		StateFiringRange:  make([]IsHittingTarget, cfg.FiringLines+1),
 		Competitor2Info:   make(map[int]*Info),
 	}, nil
 }

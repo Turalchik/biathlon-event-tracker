@@ -15,6 +15,7 @@ func (eventTracker *EventTracker) LeftFiringRange(competitorID int) error {
 	}
 	info.CurrentNumberPenaltyLaps--
 
+	eventTracker.IsBusyFiringRange[info.FiringRange] = false
 	eventTracker.StateFiringRange[info.FiringRange] = IsHittingTarget([6]bool{})
 	info.Status = LeftFiringRange
 	return nil

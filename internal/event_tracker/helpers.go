@@ -1,8 +1,10 @@
 package event_tracker
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -65,6 +67,11 @@ var (
 	ErrCompetitorNotLeftFiringRangeOrPenaltyLaps = errors.New("competitor not left firing range or penalty lap")
 	ErrCompetitorNotStartedOrAlreadyFinished     = errors.New("competitor already finished")
 	ErrCompetitorAlreadyCantContinue             = errors.New("competitor already can't continue")
+	ErrCantOpenFile                              = errors.New("can't open file")
+	ErrReadingFile                               = errors.New("error reading the file")
+	ErrCantDecodeJSON                            = errors.New("can't decode json file")
+	ErrInvalidTimeFormat                         = errors.New("invalid time format")
+	ErrInvalidFiringRangeFormat                  = errors.New("invalid firing range format")
 )
 
 func TimeToMilliseconds(timeStr string) (int, error) {
@@ -86,20 +93,36 @@ func TimeToMilliseconds(timeStr string) (int, error) {
 	}
 
 	secParts := strings.Split(parts[2], ".")
-	if len(secParts) != 2 || len(secParts[1]) != 3 {
-		return 0, fmt.Errorf("invalid seconds format")
-	}
 
 	seconds, err := strconv.Atoi(secParts[0])
 	if err != nil || seconds < 0 || seconds >= 60 {
 		return 0, fmt.Errorf("invalid seconds")
 	}
 
-	milliseconds, err := strconv.Atoi(secParts[1])
-	if err != nil || milliseconds < 0 || milliseconds >= 1000 {
-		return 0, fmt.Errorf("invalid milliseconds")
+	var milliseconds int
+	if len(secParts) == 2 {
+		milliseconds, err = strconv.Atoi(secParts[1])
+		if err != nil || milliseconds < 0 || milliseconds >= 1000 {
+			return 0, fmt.Errorf("invalid milliseconds")
+		}
 	}
 
 	totalMs := (hours*3600+minutes*60+seconds)*1000 + milliseconds
 	return totalMs, nil
+}
+
+func ParseConfig(filename string) (*Config, error) {
+	file, err := os.Open(filename)
+	if err != nil {
+		return nil, fmt.Errorf("%w with error %s", ErrCantOpenFile, err)
+	}
+	defer file.Close()
+
+	var config Config
+	err = json.NewDecoder(file).Decode(&config)
+	if err != nil {
+		return nil, fmt.Errorf("%w with error %s", ErrCantDecodeJSON, err)
+	}
+
+	return &config, nil
 }
