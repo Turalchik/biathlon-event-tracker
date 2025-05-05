@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Turalchik/biathlon-event-tracker/internal/event_tracker"
 	"github.com/joho/godotenv"
 	"log"
@@ -33,4 +34,8 @@ func main() {
 	if err = eventTracker.HandleEventsFromFile(eventsFilename); err != nil {
 		log.Printf("Can't handle events from file with error %s\n", err)
 	}
+
+	fmt.Println()
+	finalReport := eventTracker.GetFinalReport()
+	fmt.Println(finalReport)
 }

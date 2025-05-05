@@ -74,6 +74,12 @@ var (
 	ErrInvalidFiringRangeFormat                  = errors.New("invalid firing range format")
 )
 
+var Mark2String = map[Mark]string{
+	NotStarted:  "NotStarted",
+	NotFinished: "NotFinished",
+	Finished:    "Finished",
+}
+
 func TimeToMilliseconds(timeStr string) (int, error) {
 	cleaned := strings.Trim(timeStr, "[] ")
 
@@ -109,6 +115,24 @@ func TimeToMilliseconds(timeStr string) (int, error) {
 
 	totalMs := (hours*3600+minutes*60+seconds)*1000 + milliseconds
 	return totalMs, nil
+}
+
+func MillisecondsToTime(ms int) string {
+
+	totalSeconds := ms / 1000
+	milliseconds := ms % 1000
+
+	hours := totalSeconds / 3600
+	remainingSeconds := totalSeconds % 3600
+	minutes := remainingSeconds / 60
+	seconds := remainingSeconds % 60
+
+	return fmt.Sprintf("%02d:%02d:%02d.%03d",
+		hours,
+		minutes,
+		seconds,
+		milliseconds,
+	)
 }
 
 func ParseConfig(filename string) (*Config, error) {
